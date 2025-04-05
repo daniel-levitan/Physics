@@ -14,7 +14,7 @@ namespace physicsEngine
 
     private:
         /** Padding to ensure 4-word alignment. */
-        real pad;
+        [[maybe_unused]] real pad;  // Used for byte alignment
 
     public:
         Vector3() : x(0), y(0), z(0) {}
