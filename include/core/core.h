@@ -21,6 +21,11 @@ namespace physicsEngine
         Vector3(const real x, const real y, const real z)
              : x(x), y(y), z(z) {}
 
+        void clear()
+        {
+            x = y = z = 0;
+        }
+
         void invert()
         {
             x = -x;

@@ -8,27 +8,32 @@
 
 using namespace physicsEngine;
 
-std::unique_ptr<Application> app;
-
+extern Application* getApplication();
 
 int main() {
 
+    std::unique_ptr<Application> app;
+
     try {
-    	app = std::make_unique<Application>(WINDOW_WIDTH, WINDOW_HEIGHT, "Demo");
-        // last_frame_time = 0;
+        app.reset(getApplication());
         app->setEngineIsRunning(true);
         TimingData::init();
-    } catch (const std::runtime_error& e) {
-        std::cerr << "Error initializing Application: " << e.what() << std::endl;        
+     }
+    catch (const std::exception& e) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, 
+                               "Error", 
+                               e.what(), 
+                               nullptr);
+        return 1;
     }
 
-    while (app->isEngineRunning()) 
-    {
+    while (app->isEngineRunning()) {
         app->processInput();
-        // update();
+        app->update();
         app->render();
     }
+    
+    TimingData::deinit();
 
-    TimingData::deinit();    
     return 0;
 }

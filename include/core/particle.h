@@ -3,7 +3,8 @@
 
 #include "core.h"
 
-namespace physicsEngine {
+namespace physicsEngine 
+{
 
     class Particle 
     {
@@ -43,6 +44,19 @@ namespace physicsEngine {
          * This function uses a Newton-Euler integration method, which is a * linear approximation of the correct integral. For this reason it * may be inaccurate in some cases.
          */
         void integrate(real duration);
+
+
+        void getPosition(Vector3 *position) const;
+        
+        void setPosition(const real x, const real y, const real z);
+        void setMass(const real mass);
+        void setDamping(const real damping);
+        void setVelocity(const real x, const real y, const real z);
+        void setAcceleration(const real x, const real y, const real z);
+
+        void clearAccumulator();
+        // void setVelocity(const Vector3 &velocity);
+        // void setAcceleration(const Vector3 &acceleration);
     };
 
 }

@@ -1,4 +1,6 @@
 #include "app.h"
+#include "timing.h"
+#include <iostream>
 // #include <stdexcept>
 
 // Custom deleters for SDL_Window and SDL_Renderer
@@ -7,7 +9,8 @@ auto rendererDeleter = [](SDL_Renderer* ptr) { if (ptr) SDL_DestroyRenderer(ptr)
 
 Application::Application(int width, int height, const std::string& title) 
     : window(nullptr, windowDeleter),
-      renderer(nullptr, rendererDeleter) 
+      renderer(nullptr, rendererDeleter),
+      engineIsRunning(false) 
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         throw std::runtime_error("Failed to initialize SDL: " + std::string(SDL_GetError()));
@@ -62,20 +65,36 @@ void Application::processInput(void)
             case SDL_QUIT:
             engineIsRunning = false;
                 break;
+            // case SDL_KEYDOWN:
+            //     if (event.key.keysym.sym == SDLK_ESCAPE) {
+            //         engineIsRunning = false;
+            //     } else if (event.key.keysym.sym == SDLK_SPACE) {
+                    
+            //     }
+            //     break;
             case SDL_KEYDOWN:
-                if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    engineIsRunning = false;
-                }
+                keyStates[event.key.keysym.sym] = true;  // Set key state to 'down'
+                break;
+    
+            case SDL_KEYUP:
+                keyStates[event.key.keysym.sym] = false; // Set key state to 'up'
                 break;
         }
     }
+
+    if (keyStates[SDLK_ESCAPE]) {
+        engineIsRunning = false;
+    }
+
+    if (keyStates[SDLK_SPACE]) {
+        key(); // For now, the only key I call is SPACE
+    }
+
 }
 
 void Application::render(void) 
 {
-    clearScreen(127, 127, 127, 255);  // Clear screen using the Graphics object
-
-    // HERE I'LL RENDER THE SIMULATION
+    // clearScreen(127, 127, 127, 255);  // Clear screen using the Graphics object
 
     presentScreen();  // Present the screen using the Graphics object
 }
@@ -89,4 +108,13 @@ void Application::setEngineIsRunning(bool state)
 {
     engineIsRunning = state;
 
+}
+
+void Application::key()
+{
+}
+
+void Application::update()
+{
+    TimingData::get().update();
 }

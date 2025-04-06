@@ -62,8 +62,7 @@ void TimingData::update()
 
     // Update the timing information.
     unsigned thisTime = systemTime();
-    timingData->lastFrameDuration = thisTime -
-        timingData->lastFrameTimestamp;
+    timingData->lastFrameDuration = thisTime - timingData->lastFrameTimestamp;
     timingData->lastFrameTimestamp = thisTime;
 
     // Update the tick information.
